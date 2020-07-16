@@ -1,0 +1,28 @@
+name: Build and Deploy
+
+on: push
+
+jobs:
+    pipeline:
+        name: Build and Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v2
+
+            - name: Set up Go Environment
+              uses: actions/setup-go@v2
+              with:
+                go-version: '^1.13.1'
+
+            - name: Get Dependencies
+              run: go get github.com/aws/aws-lambda-go/lambda
+
+            - name: Build Code
+              run: GOOS=linux go build main.go
+
+            - name: Package Code
+              run: zip function.zip main
+
+            - name: Deploy to AWS Lambda
+              run: echo 'This is just a placeholder'
